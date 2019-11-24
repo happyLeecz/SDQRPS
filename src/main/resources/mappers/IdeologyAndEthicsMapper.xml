@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gxu.sdqrps.dao.IdeologyAndEthicsMapper">
+    <select id="getById" resultType="IdeologyAndEthics">
+        select * from ideology_and_ethics
+        where user_id = #{userId} and
+        quality_contriol_id = #{qualityControlId}
+    </select>
+
+    <update id="updateValues">
+        update ideology_and_ethics set
+                                       target = #{target},
+                                       standard = #{standard},
+                                       pre_warning_value = #{preWarningValue}
+        where user_id = #{userId} and
+            quality_control_id = #{qualityControlId}
+    </update>
+    <update id="updateTarget">
+        update ideology_and_ethics set
+            target = #{target}
+        where user_id = #{userId} and
+            quality_control_id = #{qualityControlId}
+    </update>
+
+    <update id="updateStandard">
+        update ideology_and_ethics set
+            standard = #{standard}
+        where user_id = #{userId} and
+            quality_control_id = #{qualityControlId}
+    </update>
+
+    <update id="updatePreWarning">
+        update ideology_and_ethics set
+            pre_warning_value = #{preWarningValue}
+        where user_id = #{userId} and
+            quality_control_id = #{qualityControlId}
+    </update>
+</mapper>

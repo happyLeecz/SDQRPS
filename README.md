@@ -1,2 +1,2 @@
 # SDQRPS
-studens' development quality review and pre-warning system
+students' development quality review and pre-warning system

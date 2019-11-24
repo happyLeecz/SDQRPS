@@ -43,9 +43,9 @@ CREATE TABLE IF NOT EXISTS `relations_q_and_p`(
 CREATE TABLE IF NOT EXISTS `ideology_and_ethics`(
     `user_id` INT NOT NULL COMMENT '用户ID',
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
-    `target` INT COMMENT '目标',
-    `standard` INT COMMENT '标准',
-    `pre_warning_value`INT COMMENT '预警值',
+    `target` INT COMMENT '目标' DEFAULT NULL,
+    `standard` INT COMMENT '标准' DEFAULT NULL ,
+    `pre_warning_value`INT COMMENT '预警值' DEFAULT NULL,
     PRIMARY KEY (`user_id`,`quality_control_id`)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '思想品德表';

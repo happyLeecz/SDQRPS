@@ -6,6 +6,8 @@ spring:
     password: root12345678
 
 mybatis:
-  type-aliases-package: edu.gxu.sdqrps.model.entity
-  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: edu.gxu.sdqrps.model.domain
+  mapper-locations: classpath:mappers/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
