@@ -1,6 +1,9 @@
-package edu.gxu.sdqrps.model.domain;
+package edu.gxu.sdqrps.model.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author cz
  */

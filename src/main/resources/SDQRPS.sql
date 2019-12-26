@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `relations_i_and_q`(
     `index_id` INT NOT NULL COMMENT '指标ID',
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
     PRIMARY KEY (`index_id`,`quality_control_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '指标与质控点关系表';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '指标与质控点e关系表';
 
 CREATE TABLE IF NOT EXISTS `relations_q_and_p`(
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `relations_q_and_p`(
 CREATE TABLE IF NOT EXISTS `ideology_and_ethics`(
     `user_id` INT NOT NULL COMMENT '用户ID',
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
-    `target` INT COMMENT '目标' DEFAULT NULL,
+    `target` INT COMMENT '目标' DEFAULT NULLlx,
     `standard` INT COMMENT '标准' DEFAULT NULL ,
     `pre_warning_value`INT COMMENT '预警值' DEFAULT NULL,
     PRIMARY KEY (`user_id`,`quality_control_id`)

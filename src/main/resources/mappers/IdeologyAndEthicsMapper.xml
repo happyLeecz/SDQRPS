@@ -37,4 +37,9 @@
         where user_id = #{userId} and
             quality_control_id = #{qualityControlId}
     </update>
+
+    <select id="listByUserId" resultType="IdeologyAndEthics">
+        select * from ideology_and_ethics
+        where user_id = #{userId}
+    </select>
 </mapper>

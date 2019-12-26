@@ -1,4 +1,4 @@
-package edu.gxu.sdqrps.model.domain;
+package edu.gxu.sdqrps.model.entity;
 
 import lombok.Data;
 /**

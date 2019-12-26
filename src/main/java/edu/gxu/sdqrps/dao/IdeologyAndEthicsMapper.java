@@ -1,24 +1,18 @@
 package edu.gxu.sdqrps.dao;
 
-import edu.gxu.sdqrps.model.domain.IdeologyAndEthics;
+import edu.gxu.sdqrps.model.entity.IdeologyAndEthics;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author cz
  */
+
 public interface IdeologyAndEthicsMapper {
 
-//    int insertTarget(@Param("userId") int userId,
-//                     @Param("qualityControlId") int qualityControlId,
-//                     @Param("target") int target);
-//
-//    int insertStandard(@Param("userId") int userId,
-//                       @Param("qualityControlId") int qualityControlId,
-//                       @Param("standard") int standard);
-//
-//    int insertPreWarning(@Param("userId") int userId,
-//                         @Param("qualityControlId") int qualityControlId,
-//                         @Param("preWarning") int preWarning);
     int updateValues(@Param("userId") int userId,
                      @Param("qualityControlId") int qualityControlId,
                      @Param("target") int target,
@@ -27,7 +21,7 @@ public interface IdeologyAndEthicsMapper {
 
 
     IdeologyAndEthics getById(@Param("userId") int userId,
-                              @Param("qualityControlId") int qualityControlId);
+                               @Param("qualityControlId") int qualityControlId);
 
     int updateTarget(@Param("userId") int userId,
                      @Param("qualityControlId")int qualityControlId,
@@ -41,5 +35,7 @@ public interface IdeologyAndEthicsMapper {
                          @Param("qualityControlId")int qualityControlId,
                          @Param("newPreWarningValue") int newPreWarningValue);
 
+    List<IdeologyAndEthics> listByUserId(@Param("userId") int userId);
+    
 
 }
