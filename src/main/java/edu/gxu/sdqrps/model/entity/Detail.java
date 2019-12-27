@@ -5,7 +5,8 @@ import lombok.Data;
  * @author cz
  */
 @Data
-public class IdeologyAndEthics {
+public class Detail {
+    private int contentId;
     private int userId;
     private int qualityControlId;
     private int target;

@@ -2,44 +2,44 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.gxu.sdqrps.dao.IdeologyAndEthicsMapper">
-    <select id="getById" resultType="IdeologyAndEthics">
-        select * from ideology_and_ethics
-        where user_id = #{userId} and
+<mapper namespace="edu.gxu.sdqrps.dao.detailMapper">
+    <select id="getById" resultType="detail">
+        select * from details
+        where content_id = #{contentId} and user_id = #{userId} and
         quality_contriol_id = #{qualityControlId}
     </select>
 
     <update id="updateValues">
-        update ideology_and_ethics set
+        update details set
                                        target = #{target},
                                        standard = #{standard},
                                        pre_warning_value = #{preWarningValue}
-        where user_id = #{userId} and
+        where content_id = #{contentId} and user_id = #{userId} and
             quality_control_id = #{qualityControlId}
     </update>
     <update id="updateTarget">
-        update ideology_and_ethics set
+        update details set
             target = #{target}
-        where user_id = #{userId} and
+        where content_id = #{contentId} and user_id = #{userId} and
             quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updateStandard">
-        update ideology_and_ethics set
+        update details set
             standard = #{standard}
-        where user_id = #{userId} and
+        where content_id = #{contentId} and user_id = #{userId} and
             quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updatePreWarning">
-        update ideology_and_ethics set
+        update details set
             pre_warning_value = #{preWarningValue}
-        where user_id = #{userId} and
+        where content_id = #{contentId} and user_id = #{userId} and
             quality_control_id = #{qualityControlId}
     </update>
 
     <select id="listByUserId" resultType="IdeologyAndEthics">
-        select * from ideology_and_ethics
+        select * from details
         where user_id = #{userId}
     </select>
 </mapper>
