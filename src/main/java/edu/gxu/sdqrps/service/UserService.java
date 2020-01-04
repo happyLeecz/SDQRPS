@@ -1,6 +1,7 @@
 package edu.gxu.sdqrps.service;
 
 import edu.gxu.sdqrps.model.entity.User;
+import edu.gxu.sdqrps.model.vo.Result;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public interface UserService {
      * @return true if the login information is correct;
      *         false otherwise
      */
-    boolean checkUser(String username, String password);
+    Result checkUser(String username, String password);
 
     /**
      * get User detail
@@ -24,6 +25,6 @@ public interface UserService {
      * @param userName
      * @return Optional<User> object
      */
-    Optional<User> getUser(String userName);
+    Optional<User> getUserById(int userId);
 
 }

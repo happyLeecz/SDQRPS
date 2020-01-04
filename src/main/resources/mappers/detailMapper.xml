@@ -38,8 +38,8 @@
             quality_control_id = #{qualityControlId}
     </update>
 
-    <select id="listByUserId" resultType="IdeologyAndEthics">
+    <select id="listById" resultType="detail">
         select * from details
-        where user_id = #{userId}
+        where user_id = #{userId} and content_id = #{contentId}
     </select>
 </mapper>

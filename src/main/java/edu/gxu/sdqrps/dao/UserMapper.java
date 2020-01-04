@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 public interface UserMapper {
 
-    User getByUserName(@Param("userName") String userName);
-
+    Integer getIdByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
+    User getById(@Param("userId") int userId);
 
 }

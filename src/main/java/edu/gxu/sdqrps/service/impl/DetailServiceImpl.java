@@ -2,8 +2,10 @@ package edu.gxu.sdqrps.service.impl;
 
 import edu.gxu.sdqrps.dao.detailMapper;
 import edu.gxu.sdqrps.model.entity.Detail;
-import edu.gxu.sdqrps.service.detailService;
+import edu.gxu.sdqrps.model.vo.Result;
+import edu.gxu.sdqrps.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,17 +13,21 @@ import java.util.List;
  * @author cz
  * @date 2019/12/22 11:19 上午
  */
-public class detailServiceImpl implements detailService {
+@Service
+public class DetailServiceImpl implements DetailService {
     private detailMapper detailMapper;
 
     @Autowired
-    public detailServiceImpl(detailMapper detailMapper) {
+    public DetailServiceImpl(detailMapper detailMapper) {
         this.detailMapper = detailMapper;
     }
 
     @Override
-    public List<Detail> getAllWithUserId(int userId) {
-        return detailMapper.listByUserId(userId);
+    public Result getAllWithUserIdAndContentId(int userId, int contentId) {
+        List<Detail> details = detailMapper.listById(userId, contentId);
+        if(details.isEmpty())
+            return new Result<String>(201, "没有信息");
+        else return new Result<List>(200, details);
     }
 
     @Override

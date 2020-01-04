@@ -39,7 +39,7 @@ public interface detailMapper {
                          @Param("qualityControlId")int qualityControlId,
                          @Param("newPreWarningValue") int newPreWarningValue);
 
-    List<Detail> listByUserId(@Param("userId") int userId);
+    List<Detail> listById(@Param("userId") int userId,@Param("contentId") int contentId);
     
 
 }

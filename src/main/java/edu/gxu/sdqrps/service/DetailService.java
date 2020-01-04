@@ -1,6 +1,7 @@
 package edu.gxu.sdqrps.service;
 
 import edu.gxu.sdqrps.model.entity.Detail;
+import edu.gxu.sdqrps.model.vo.Result;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ import java.util.List;
  * @author cz
  * @date 2019/11/28 7:33 PM
  */
-public interface detailService {
+public interface DetailService {
 
-    List<Detail> getAllWithUserId(int userId);
+    Result getAllWithUserIdAndContentId(int userId, int contentId);
 
     boolean updateTargetValue(int contentId, int userId,int qualityControlId,int newTarget);
 

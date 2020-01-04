@@ -33,9 +33,7 @@ class SdqrpsApplicationTests {
      * 测试下mybatis
      */
     void mapperTest() {
-        User user = userMapper.getByUserName("wxy");
-        System.out.println(user.toString());
-        Assert.assertEquals(2,user.getUserId());
+
     }
 
 }

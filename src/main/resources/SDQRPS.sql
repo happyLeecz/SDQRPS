@@ -228,6 +228,10 @@ CREATE TABLE IF NOT EXISTS `details`(
 # insert into projects(project_description) values ('获得省级奖励');
 # insert into projects(project_description) values ('参加创新创业培训次数');
 
+#插入detail表
+insert into details values (1,1,1,5,4,2);
+insert into details values (1,1,2,1,1,1);
+insert into details values (1,1,3,80,70,60);
 
 
 
