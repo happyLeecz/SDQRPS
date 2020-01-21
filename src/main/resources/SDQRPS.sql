@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS `projects`(
     PRIMARY KEY (`project_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '项目表';
 
-CREATE TABLE IF NOT EXISTS `relations_i_and_q`(
-    `index_id` INT NOT NULL COMMENT '指标ID',
-    `quality_control_id` INT NOT NULL COMMENT '质控点ID',
-    PRIMARY KEY (`index_id`,`quality_control_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '指标与质控点关系表';
+# CREATE TABLE IF NOT EXISTS `relations_i_and_q`(
+#     `index_id` INT NOT NULL COMMENT '指标ID',
+#     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
+#     PRIMARY KEY (`index_id`,`quality_control_id`)
+# )ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '指标与质控点关系表';
 
 CREATE TABLE IF NOT EXISTS `relations_q_and_p`(
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
@@ -49,11 +49,12 @@ CREATE TABLE IF NOT EXISTS `content`(
 CREATE TABLE IF NOT EXISTS `details`(
     `content_id` INT NOT NULL COMMENT '内容ID',
     `user_id` INT NOT NULL COMMENT '用户ID',
+    `index_id` INT NOT NULL COMMENT '指标ID',
     `quality_control_id` INT NOT NULL COMMENT '质控点ID',
     `target` INT COMMENT '目标' DEFAULT 0,
     `standard` INT COMMENT '标准' DEFAULT 0 ,
     `pre_warning_value`INT COMMENT '预警值' DEFAULT 0,
-    PRIMARY KEY (`content_id`,`user_id`,`quality_control_id`)
+    PRIMARY KEY (`content_id`,`user_id`,`index_id`,`quality_control_id`)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8MB4 COMMENT '学院具体内容表';
 #插入内容信息
@@ -229,9 +230,11 @@ CREATE TABLE IF NOT EXISTS `details`(
 # insert into projects(project_description) values ('参加创新创业培训次数');
 
 #插入detail表
-insert into details values (1,1,1,5,4,2);
-insert into details values (1,1,2,1,1,1);
-insert into details values (1,1,3,80,70,60);
+# insert into details values (1,1,1,1,5,4,2);
+# insert into details values (1,1,1,2,1,1,1);
+# insert into details values (1,1,1,3,80,70,60);
+insert into details values (3,1,3,13,60,55,50);
+insert into details values (3,1,3,14,20,15,15);
 
 
 

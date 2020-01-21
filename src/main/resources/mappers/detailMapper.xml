@@ -2,11 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.gxu.sdqrps.dao.detailMapper">
-    <select id="getById" resultType="detail">
-        select * from details
-        where content_id = #{contentId} and user_id = #{userId} and
-        quality_contriol_id = #{qualityControlId}
+
+<mapper namespace="edu.gxu.sdqrps.dao.DetailMapper">
+    <select id="getById" resultType="detailInfo">
+        select d.content_id,d.user_id,d.quality_control_id,e.quality_control_description,d.target,d.standard,d.pre_warning_value
+        from details d inner join quality_control q on d.quality_control_id = q.quality_control_id
+        where d.content_id = #{contentId} and  d.user_id = #{userId} and d.quality_control_id = #{qualityControlId}
     </select>
 
     <update id="updateValues">
@@ -14,32 +15,33 @@
                                        target = #{target},
                                        standard = #{standard},
                                        pre_warning_value = #{preWarningValue}
-        where content_id = #{contentId} and user_id = #{userId} and
+        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
             quality_control_id = #{qualityControlId}
     </update>
     <update id="updateTarget">
         update details set
-            target = #{target}
-        where content_id = #{contentId} and user_id = #{userId} and
+            target = #{newTarget}
+        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
             quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updateStandard">
         update details set
-            standard = #{standard}
-        where content_id = #{contentId} and user_id = #{userId} and
+            standard = #{newStandard}
+        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
             quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updatePreWarning">
         update details set
-            pre_warning_value = #{preWarningValue}
-        where content_id = #{contentId} and user_id = #{userId} and
+            pre_warning_value = #{newPreWarningValue}
+        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
             quality_control_id = #{qualityControlId}
     </update>
 
-    <select id="listById" resultType="detail">
-        select * from details
-        where user_id = #{userId} and content_id = #{contentId}
+    <select id="listById" resultType="detailInfo">
+        select d.content_id,d.user_id,d.index_id,d.quality_control_id,q.quality_control_description,d.target,d.standard,d.pre_warning_value
+            from details d inner join quality_control q on d.quality_control_id = q.quality_control_id
+        where d.user_id = #{userId} and d.content_id = #{contentId}
     </select>
 </mapper>

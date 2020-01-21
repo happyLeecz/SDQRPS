@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SDQRPS LOGIN</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        #login {
+            width: 500px;
+            margin: 200px auto;
+        }
+    </style>
+</head>
+<body>
+<div id="login" >
+
+<el-form v-loading="loading" element-loading-text="登陆成功 正在跳转"  status-icon  :model="loginInfo" :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
+    <h1 >学生发展质量体系评估与预警系统</h1>
+    <el-form-item label="账号" prop="username" >
+        <el-input type="text" v-model="loginInfo.username" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="loginInfo.password" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
+        <el-button @click="resetForm('loginForm')">重置</el-button>
+    </el-form-item>
+</el-form>
+</div>
+<script type="text/javascript">
+    var login = new Vue({
+        el: '#login',
+        data: {
+           loading: false,
+          loginInfo :{
+            username: '',
+            password: ''
+          },
+            rules:{
+              username: [{
+                  required: true,
+                  message: '请输入账户名',
+                  trigger: 'blur'
+              },
+                  {
+                      min: 3,
+                      max: 10,
+                      message: '长度在 3 到 10 个字符',
+                      trigger: 'blur'
+              }],
+                password: [{
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur'
+                },
+                    {
+                        min: 3,
+                        max: 10,
+                        message: '长度在 3 到 10 个字符',
+                        trigger: 'blur'
+                    }
+                ]
+            }
+        },
+        methods: {
+            submitForm(formName){
+                this.$refs[formName].validate((valid) =>{
+                    if(valid){
+                        const params = new URLSearchParams();
+                        params.append('userName', this.loginInfo.username);
+                        params.append('password', this.loginInfo.password);
+                       axios.post('/sdqrps/login',params)
+                        .then((response) => {
+                            if(response.data.code === 100) {
+                                this.loading = true;
+                                setTimeout(() => {
+                                    window.location.href = '/sdqrps/home';
+                                }, 500);
+
+                            }
+                            else
+
+                                this.$message.error(response.data.info);
+                        });
+                    }
+
+                });
+            },
+            resetForm(formName) {
+              this.$refs[formName].resetFields();
+            }
+        }
+    });
+</script>
+</body>
+</html>

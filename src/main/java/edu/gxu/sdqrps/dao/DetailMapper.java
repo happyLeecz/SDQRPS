@@ -1,6 +1,6 @@
 package edu.gxu.sdqrps.dao;
 
-import edu.gxu.sdqrps.model.entity.Detail;
+import edu.gxu.sdqrps.model.vo.DetailInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,37 +9,42 @@ import java.util.List;
  * @author cz
  */
 
-public interface detailMapper {
+public interface DetailMapper {
 
     int updateValues(@Param("contentId") int contentId,
                      @Param("userId") int userId,
+                     @Param("indexId") int indexId,
                      @Param("qualityControlId") int qualityControlId,
                      @Param("target") int target,
                      @Param("standard") int standard,
                      @Param("preWarningValue") int preWarningValue);
 
 
-    Detail getById(@Param("contentId") int contentId,
-                   @Param("userId") int userId,
-                   @Param("qualityControlId") int qualityControlId);
+    DetailInfo getById(@Param("contentId") int contentId,
+                       @Param("userId") int userId,
+                       @Param("indexId") int indexId,
+                       @Param("qualityControlId") int qualityControlId);
 
     int updateTarget(@Param("contentId") int contentId,
                      @Param("userId") int userId,
+                     @Param("indexId") int indexId,
                      @Param("qualityControlId")int qualityControlId,
                      @Param("newTarget") int newTarget);
 
     int updateStandard(
                        @Param("contentId") int contentId,
                        @Param("userId") int userId,
+                       @Param("indexId") int indexId,
                        @Param("qualityControlId")int qualityControlId,
                        @Param("newStandard") int newStandard);
 
     int updatePreWarning(@Param("contentId") int contentId,
                          @Param("userId") int userId,
+                         @Param("indexId") int indexId,
                          @Param("qualityControlId")int qualityControlId,
                          @Param("newPreWarningValue") int newPreWarningValue);
 
-    List<Detail> listById(@Param("userId") int userId,@Param("contentId") int contentId);
+    List<DetailInfo> listById(@Param("userId") int userId,@Param("contentId") int contentId);
     
 
 }

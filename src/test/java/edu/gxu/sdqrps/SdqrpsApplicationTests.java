@@ -1,7 +1,9 @@
 package edu.gxu.sdqrps;
 
+import edu.gxu.sdqrps.dao.DetailMapper;
 import edu.gxu.sdqrps.dao.UserMapper;
 import edu.gxu.sdqrps.model.entity.User;
+import edu.gxu.sdqrps.model.vo.DetailInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,16 @@ class SdqrpsApplicationTests {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private DetailMapper detailMapper;
 
     @Test
     /**
      * 测试下mybatis
      */
-    void mapperTest() {
-
+    void detailmapperTest() {
+    List<DetailInfo> infoList= detailMapper.listById(1,1);
+        System.out.println(infoList.toString());
     }
 
 }

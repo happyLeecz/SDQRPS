@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生发展质量体系评估与预警系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        .el-header {
+            background-color: #303133;
+            color: #333;
+        }
+
+        .el-aside {
+            color: #606266;
+        }
+
+        .el-main {
+            color: #333;
+            margin: 0;
+            padding: 0;
+
+        }
+        body > .el-container {
+            margin-bottom: 40px;
+        }
+        .el-table .warning-row {
+            background: oldlace;
+        }
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #409EFF;
+        }
+
+    </style>
+</head>
+<body>
+<div id="home">
+    <el-container>
+        <el-header>
+            <el-link :underline="false">
+                <h1 style="color: snow" @click="showHello">学生质量体系评估与预警系统</h1>
+            </el-link>
+
+            <div style="float:right;padding-top: 10px">
+                <el-dropdown trigger="click">
+                    <el-avatar class="el-dropdown-link">
+                        {{userDes}}
+                    </el-avatar>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item   @click.native="logOut" ><i class="el-icon-circle-close"></i>退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+
+            </div>
+        </el-header>
+        <el-container style="height: 600px; border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+
+                <el-menu>
+
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-s-order"></i>指控点表格描述</template>
+                        <el-menu-item-group>
+                            <template slot="title">内容</template>
+                            <el-menu-item index="1-1" @click="getInfo('1')">思想品德</el-menu-item>
+                            <el-menu-item index="1-2" @click="getInfo('2')">行为规范</el-menu-item>
+                            <el-submenu index="1-3">
+                                <template slot="title">身心素质</template>
+                                <el-menu-item index="1-3-1"  @click="getInfo('3','3')">心理发展</el-menu-item>
+                                <el-menu-item index="1-3-2"  @click="getInfo('3','4')">身体发展</el-menu-item>
+                                <el-menu-item index="1-3-3"  @click="getInfo('3','5')">身心发展保障</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="1-4">
+                                <template slot="title">专业技能</template>
+                                <el-menu-item index="1-4-1"  @click="getInfo('4','6')">学业奖励</el-menu-item>
+                                <el-menu-item index="1-4-2"  @click="getInfo('4','7')">学习状况</el-menu-item>
+                                <el-menu-item index="1-4-3"  @click="getInfo('4','8')">学业发展保障</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="1-5">
+                                <template slot="title">职业能力</template>
+                                <el-menu-item index="1-5-1"  @click="getInfo('5','9')">职业生涯</el-menu-item>
+                                <el-menu-item index="1-5-2"  @click="getInfo('5','10')">就业状况</el-menu-item>
+                                <el-menu-item index="1-5-3"  @click="getInfo('5','11')">就业保障</el-menu-item>
+                                <el-menu-item index="1-5-4"  @click="getInfo('5','12')">社会实践</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="1-6">
+                                <template slot="title">创新创业</template>
+                                <el-menu-item index="1-6-1"  @click="getInfo('6','13')">创新创业状况</el-menu-item>
+                                <el-menu-item index="1-6-2"  @click="getInfo('6','14')">创新创业保障</el-menu-item>
+                            </el-submenu>
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-s-data"></i>指控点图表描述</template>
+                        <el-menu-item-group>
+                            <template slot="title">内容</template>
+                            <el-menu-item index="2-1">思想品德</el-menu-item>
+                            <el-menu-item index="2-2">行为规范</el-menu-item>
+                            <el-submenu index="2-3">
+                                <template slot="title">身心素质</template>
+                                <el-menu-item index="2-3-1">心理发展</el-menu-item>
+                                <el-menu-item index="2-3-2">身体发展</el-menu-item>
+                                <el-menu-item index="2-3-3">身心发展保障</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="2-4">
+                                <template slot="title">专业技能</template>
+                                <el-menu-item index="2-4-1">学业奖励</el-menu-item>
+                                <el-menu-item index="2-4-2">学习状况</el-menu-item>
+                                <el-menu-item index="2-4-3">学业发展保障</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="2-5">
+                                <template slot="title">职业能力</template>
+                                <el-menu-item index="2-5-1">职业生涯</el-menu-item>
+                                <el-menu-item index="2-5-2">就业状况</el-menu-item>
+                                <el-menu-item index="2-5-3">就业保障</el-menu-item>
+                                <el-menu-item index="2-5-4">社会实践</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="2-6">
+                                <template slot="title">创新创业</template>
+                                <el-menu-item index="2-6-1">创新创业状况</el-menu-item>
+                                <el-menu-item index="2-6-2">创新创业保障</el-menu-item>
+                            </el-submenu>
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                </el-menu>
+
+            </el-aside>
+
+            <el-container>
+                <el-main>
+                    <template v-if="ifShowData">
+                        <el-table :data="tableData" :row-class-name="tableRowClassName">
+
+                        <el-table-column prop="qualityControlDescription" label="质控点内容" width="400px">
+                        </el-table-column>
+
+                        <el-table-column prop="target" label="目标">
+                            <template v-slot="scope">
+                                <el-popover
+                                        placement="top-start"
+                                        title="提示"
+                                        width="200"
+                                        trigger="hover"
+                                        content="点击可以编辑">
+                                    <el-button slot="reference" @click="edit(scope,'target')" type="text" size="small">{{scope.row.target}}</el-button>
+                                </el-popover>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column  label="标准">
+                            <template v-slot="scope">
+                                <el-popover
+                                        placement="top-start"
+                                        title="提示"
+                                        width="200"
+                                        trigger="hover"
+                                        content="点击可以编辑">
+                                <el-button slot="reference" @click="edit(scope,'standard')" type="text" size="small">{{scope.row.standard}}</el-button>
+                                </el-popover>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column prop="preWarningValue" label="预警值">
+                            <template v-slot="scope">
+                                <el-popover
+                                        placement="top-start"
+                                        title="提示"
+                                        width="200"
+                                        trigger="hover"
+                                        content="点击可以编辑">
+                                    <el-button slot="reference" @click="edit(scope,'preWarningValue')" type="text" size="small">{{scope.row.preWarningValue}}</el-button>
+                                </el-popover>
+                            </template>
+                        </el-table-column>
+
+                            <el-table-column label="状态">
+                                <template v-slot="scope">
+                                    <el-tag v-if="scope.row.target < scope.row.preWarningValue" type="danger" effect="dark">警告</el-tag>
+                                    <el-tag v-else effect="dark">正常</el-tag>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="100">
+                                <template slot-scope="scope">
+                                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看设定项目</el-button>
+                                </template>
+                            </el-table-column>
+                    </el-table>
+
+
+                    </template>
+
+                    <template v-else>
+                        <div>
+                            <h2 style="text-align: center">欢迎登陆</h2>
+                        </div>
+
+                    </template>
+
+                </el-main>
+            </el-container>
+        </el-container>
+
+    </el-container>
+
+</div>
+<script>
+
+    var home = new Vue({
+            el: '#home',
+            data: {
+                tableData: [],
+                ifShowData: false,
+                userDes: '',
+                tagName: ''
+            },
+            methods: {
+                getInfo: function (contentId, indexId) {
+                    var url = '/sdqrps/details/' + contentId;
+                    if (indexId != undefined)
+                        url = url + '/' + indexId;
+                        axios.get(url)
+                            .then((response) => {
+                                if (response.data.code === 200)
+                                    home.tableData = response.data.info;
+                                else {
+                                    home.tableData = [];
+                                    home.$message(response.data.info);
+                                }
+                            });
+
+                        if(home.ifShowData == false)
+                            home.ifShowData = true;
+                },
+                showHello: function () {
+                            if(home.ifShowData == true)
+                                home.ifShowData = false;
+                },
+                tableRowClassName: function (eRow) {
+                            if(eRow.row.target < eRow.row.preWarningValue)
+                                return 'warning-row';
+                            else
+                                return 'success';
+
+                },
+                logOut: function () {
+                    axios.get('/sdqrps/logout').then(response => {
+                        if(response.data === 'success')
+                            window.location.href = '/sdqrps'
+                    });
+                },
+                edit: function (scope,type) {
+                        this.$prompt('你所要修改的值是: ' + scope.row[type],'编辑',{
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                        }).then(({value}) =>{
+                            if(value == scope.row[type])
+                                this.$message({
+                                    message: '编辑的值与原来的值一致',
+                                    type: 'warning'
+                                });
+                            else {
+                                const params = new URLSearchParams();
+                                params.append('contentId', scope.row.contentId);
+                                params.append('indexId', scope.row.indexId);
+                                params.append('qualityControlId', scope.row.qualityControlId);
+                                params.append('type', type);
+                                params.append('newValue', value);
+                                axios.post('/sdqrps/edit', params).then(response => {
+                                    if (response.data.code == 400) {
+                                        scope.row[type] = value;
+                                        this.$message({
+                                            message: response.data.info,
+                                            type: 'success'
+                                        });
+                                    }
+                                    else
+                                        this.$message({
+                                            message: response.data.info,
+                                            type: 'warning'
+                                        });
+                                });
+                            }
+                        });
+                }
+            }
+        }
+    );
+    axios.get('/sdqrps/getUserDes').then(response => {
+        home.userDes = response.data.info;
+    });
+
+
+</script>
+
+</body>
+</html>

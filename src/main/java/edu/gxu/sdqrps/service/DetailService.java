@@ -1,9 +1,6 @@
 package edu.gxu.sdqrps.service;
 
-import edu.gxu.sdqrps.model.entity.Detail;
-import edu.gxu.sdqrps.model.vo.Result;
-
-import java.util.List;
+import edu.gxu.sdqrps.model.vo.InfoResult;
 
 /**
  * @author cz
@@ -11,13 +8,13 @@ import java.util.List;
  */
 public interface DetailService {
 
-    Result getAllWithUserIdAndContentId(int userId, int contentId);
+    InfoResult getAllWithUserIdAndContentId(int userId, int contentId, Integer indexId);
 
-    boolean updateTargetValue(int contentId, int userId,int qualityControlId,int newTarget);
+    InfoResult updateTargetValue(int contentId, int userId,int indexId,int qualityControlId,int newTarget);
 
-    boolean updateStandardValue(int contentId, int userId,int qualityControlId,int newStandard);
+    InfoResult updateStandardValue(int contentId, int userId,int indexId,int qualityControlId,int newStandard);
 
-    boolean updatePreWarningValue(int contentId, int userId,int qualityControlId,int newPreWarningValue);
+    InfoResult updatePreWarningValue(int contentId, int userId,int indexId,int qualityControlId,int newPreWarningValue);
 
 
 
