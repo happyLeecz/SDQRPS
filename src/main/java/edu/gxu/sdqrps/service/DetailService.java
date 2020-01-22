@@ -16,6 +16,7 @@ public interface DetailService {
 
     InfoResult updatePreWarningValue(int contentId, int userId,int indexId,int qualityControlId,int newPreWarningValue);
 
+    InfoResult getProjectWithQualityControlId(int qualityControlId);
 
 
 }

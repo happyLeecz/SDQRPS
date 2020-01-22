@@ -65,7 +65,7 @@
         <el-container style="height: 600px; border: 1px solid #eee">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
 
-                <el-menu>
+                <el-menu :default-openeds="['1', '2']">
 
                     <el-submenu index="1">
                         <template slot="title"><i class="el-icon-s-order"></i>指控点表格描述</template>
@@ -152,7 +152,7 @@
                                         title="提示"
                                         width="200"
                                         trigger="hover"
-                                        content="点击可以编辑">
+                                        content="点击可以编辑目标值">
                                     <el-button slot="reference" @click="edit(scope,'target')" type="text" size="small">{{scope.row.target}}</el-button>
                                 </el-popover>
                             </template>
@@ -165,7 +165,7 @@
                                         title="提示"
                                         width="200"
                                         trigger="hover"
-                                        content="点击可以编辑">
+                                        content="点击可以编辑标准值">
                                 <el-button slot="reference" @click="edit(scope,'standard')" type="text" size="small">{{scope.row.standard}}</el-button>
                                 </el-popover>
                             </template>
@@ -178,7 +178,7 @@
                                         title="提示"
                                         width="200"
                                         trigger="hover"
-                                        content="点击可以编辑">
+                                        content="点击可以编辑预警值">
                                     <el-button slot="reference" @click="edit(scope,'preWarningValue')" type="text" size="small">{{scope.row.preWarningValue}}</el-button>
                                 </el-popover>
                             </template>
@@ -196,7 +196,15 @@
                                     label="操作"
                                     width="100">
                                 <template slot-scope="scope">
-                                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看设定项目</el-button>
+                                    <el-popover
+                                            placement="left"
+                                            width="300"
+                                            trigger="click">
+                                        <el-table :data="projectData">
+                                            <el-table-column  property="projectDescription" label="项目名称"></el-table-column>
+                                        </el-table>
+                                    <el-button @click="showProject(scope.row.qualityControlId)" slot="reference" type="text" size="small">查看设定项目</el-button>
+                                    </el-popover>
                                 </template>
                             </el-table-column>
                     </el-table>
@@ -226,7 +234,8 @@
                 tableData: [],
                 ifShowData: false,
                 userDes: '',
-                tagName: ''
+                tagName: '',
+                projectData:[]
             },
             methods: {
                 getInfo: function (contentId, indexId) {
@@ -264,13 +273,15 @@
                     });
                 },
                 edit: function (scope,type) {
-                        this.$prompt('你所要修改的值是: ' + scope.row[type],'编辑',{
+                        this.$prompt('你即将所要修改的原始值是: ' + scope.row[type] + '，请将修改值填在下方','编辑',{
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
+                            inputPattern: /^\d+$/,
+                            inputErrorMessage: '请输入合法数字'
                         }).then(({value}) =>{
                             if(value == scope.row[type])
                                 this.$message({
-                                    message: '编辑的值与原来的值一致',
+                                    message: '编辑的值与原来的值一致，修改失败',
                                     type: 'warning'
                                 });
                             else {
@@ -296,6 +307,19 @@
                                 });
                             }
                         });
+                },
+                showProject: function (qualityControlId) {
+                     axios.get('/sdqrps/showProject/'+qualityControlId).then(response => {
+                         if(response.data.code === 500)
+                             this.projectData = response.data.info;
+                         else{
+                             this.projectData = [];
+                             this.$message({
+                                 message: response.data.info,
+                                 type: 'warning'
+                             });
+                         }
+                     });
                 }
             }
         }

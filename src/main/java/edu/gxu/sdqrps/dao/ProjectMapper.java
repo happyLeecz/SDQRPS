@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author cz
  */
@@ -12,5 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ProjectMapper {
 
     Project getByProjectId(@Param("projectId") int projectId);
+
+    List<Project> listById(@Param("qualityControlId") int qualityControlId);
 
 }

@@ -1,6 +1,8 @@
 package edu.gxu.sdqrps.service.impl;
 
 import edu.gxu.sdqrps.dao.DetailMapper;
+import edu.gxu.sdqrps.dao.ProjectMapper;
+import edu.gxu.sdqrps.model.entity.Project;
 import edu.gxu.sdqrps.model.vo.DetailInfo;
 import edu.gxu.sdqrps.model.vo.InfoResult;
 import edu.gxu.sdqrps.service.DetailService;
@@ -17,10 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class DetailServiceImpl implements DetailService {
     private DetailMapper detailMapper;
+    private ProjectMapper projectMapper;
 
     @Autowired
-    public DetailServiceImpl(DetailMapper detailMapper) {
+    public DetailServiceImpl(DetailMapper detailMapper, ProjectMapper projectMapper) {
         this.detailMapper = detailMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -56,5 +60,14 @@ public class DetailServiceImpl implements DetailService {
            return new InfoResult<String>(400,"修改预警值成功");
        else
            return new InfoResult<String>(401,"修改预警值失败");
+    }
+
+    @Override
+    public InfoResult getProjectWithQualityControlId(int qualityControlId) {
+        List<Project> projectList = projectMapper.listById(qualityControlId);
+        if(!projectList.isEmpty())
+            return new InfoResult<List>(500,projectList);
+        else
+            return new InfoResult<String>(501,"找不到项目");
     }
 }

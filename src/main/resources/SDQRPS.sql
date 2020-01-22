@@ -233,9 +233,12 @@ CREATE TABLE IF NOT EXISTS `details`(
 # insert into details values (1,1,1,1,5,4,2);
 # insert into details values (1,1,1,2,1,1,1);
 # insert into details values (1,1,1,3,80,70,60);
-insert into details values (3,1,3,13,60,55,50);
-insert into details values (3,1,3,14,20,15,15);
+# insert into details values (3,1,3,13,60,55,50);
+# insert into details values (3,1,3,14,20,15,15);
 
+insert into relations_q_and_p values (1,1);
+insert into relations_q_and_p values (1,2);
+insert into relations_q_and_p values (1,3);
 
 
 

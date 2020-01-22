@@ -70,4 +70,10 @@ public class MainController {
             return new InfoResult<String>(401, "编辑有误");
 
     }
+
+
+    @GetMapping("/showProject/{qualityControlId}")
+    public InfoResult showProject(@PathVariable("qualityControlId") int qualityControlId){
+        return detailService.getProjectWithQualityControlId(qualityControlId);
+    }
 }
