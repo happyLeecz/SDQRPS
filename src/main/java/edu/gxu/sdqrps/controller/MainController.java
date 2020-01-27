@@ -30,27 +30,27 @@ public class MainController {
     @PostMapping(value = "/login")
     public InfoResult login(@RequestParam("userName") String userName,
                             @RequestParam("password") String password,
-                            HttpSession httpSession){
+                            HttpSession httpSession) {
         InfoResult infoResult = userService.checkUser(userName, password);
-        if(infoResult.getCode() == 100)
+        if (infoResult.getCode() == 100)
             httpSession.setAttribute("userDetail", infoResult.getInfo());
         return infoResult;
     }
 
-    @GetMapping(value = {"/details/{contentId}","/details/{contentId}/{indexId}"})
-    public InfoResult showDetails(@SessionAttribute(value = "userDetail",required = false)UserDetail userDetail ,
+    @GetMapping(value = {"/details/{contentId}", "/details/{contentId}/{indexId}"})
+    public InfoResult showDetails(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
                                   @PathVariable("contentId") int contentId,
-                                  @PathVariable(value = "indexId",required = false) Integer indexId){
+                                  @PathVariable(value = "indexId", required = false) Integer indexId) {
         return detailService.getAllWithUserIdAndContentId(userDetail.getUserId(), contentId, indexId);
     }
 
     @GetMapping("/getUserDes")
-    public InfoResult getUserDes(HttpSession httpSession){
+    public InfoResult getUserDes(HttpSession httpSession) {
         UserDetail userDetail = (UserDetail) httpSession.getAttribute("userDetail");
-        if(userDetail != null)
-            return new InfoResult<String>(300,userDetail.getDescription());
+        if (userDetail != null)
+            return new InfoResult<String>(300, userDetail.getDescription());
         else
-            return new InfoResult<String>(301,"无");
+            return new InfoResult<String>(301, "无");
     }
 
     @PostMapping("/edit")
@@ -73,7 +73,7 @@ public class MainController {
 
 
     @GetMapping("/showProject/{qualityControlId}")
-    public InfoResult showProject(@PathVariable("qualityControlId") int qualityControlId){
+    public InfoResult showProject(@PathVariable("qualityControlId") int qualityControlId) {
         return detailService.getProjectWithQualityControlId(qualityControlId);
     }
 }
