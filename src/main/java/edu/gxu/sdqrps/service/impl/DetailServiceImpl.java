@@ -4,12 +4,14 @@ import edu.gxu.sdqrps.dao.DetailMapper;
 import edu.gxu.sdqrps.dao.ProjectMapper;
 import edu.gxu.sdqrps.model.entity.Project;
 import edu.gxu.sdqrps.model.vo.DetailInfo;
+import edu.gxu.sdqrps.model.vo.DetailRatio;
 import edu.gxu.sdqrps.model.vo.InfoResult;
 import edu.gxu.sdqrps.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -69,5 +71,19 @@ public class DetailServiceImpl implements DetailService {
             return new InfoResult<List>(500,projectList);
         else
             return new InfoResult<String>(501,"找不到项目");
+    }
+
+    @Override
+    public InfoResult getRatioNum(int userId, int contentId, Integer indexId) {
+        List<DetailInfo> details = detailMapper.listById(userId, contentId);
+        if(indexId != null)
+            details = details.stream().filter(detailInfo -> detailInfo.getIndexId() == indexId).collect(Collectors.toList());
+
+        if(!details.isEmpty()) {
+            long preWarningNum = details.stream().filter(detailInfo -> detailInfo.getStandard() < detailInfo.getPreWarningValue()).count();
+            return new InfoResult(600,new DetailRatio(preWarningNum,details.size() - preWarningNum));
+        }
+        else
+            return new InfoResult(601,"没有数据");
     }
 }

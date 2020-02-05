@@ -37,7 +37,7 @@ public class MainController {
         return infoResult;
     }
 
-    @GetMapping(value = {"/details/{contentId}", "/details/{contentId}/{indexId}"})
+    @GetMapping(value = {"/details/t/{contentId}", "/details/t/{contentId}/{indexId}"})
     public InfoResult showDetails(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
                                   @PathVariable("contentId") int contentId,
                                   @PathVariable(value = "indexId", required = false) Integer indexId) {
@@ -68,7 +68,6 @@ public class MainController {
             return detailService.updatePreWarningValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
         else
             return new InfoResult<String>(401, "编辑有误");
-
     }
 
 
@@ -76,4 +75,13 @@ public class MainController {
     public InfoResult showProject(@PathVariable("qualityControlId") int qualityControlId) {
         return detailService.getProjectWithQualityControlId(qualityControlId);
     }
+
+    @GetMapping(value = {"/details/c/{contentId}", "/details/c/{contentId}/{indexId}"})
+    public InfoResult getRatioData(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
+                                   @PathVariable("contentId") int contentId,
+                                   @PathVariable(value = "indexId", required = false) Integer indexId){
+        return detailService.getRatioNum(userDetail.getUserId(),contentId,indexId);
+    }
+
+
 }

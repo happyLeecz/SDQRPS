@@ -18,5 +18,7 @@ public interface DetailService {
 
     InfoResult getProjectWithQualityControlId(int qualityControlId);
 
+    InfoResult getRatioNum(int userId, int contentId, Integer indexId);
+
 
 }

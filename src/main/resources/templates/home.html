@@ -10,6 +10,9 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- echarts -->
+<!--    <script src="https://cdn.jsdelivr.net/npm/echarts@4.6.0/echarts.all.js"></script>-->
+    <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts.js"></script>
     <style>
         .el-header {
             background-color: #303133;
@@ -104,31 +107,31 @@
                         <template slot="title"><i class="el-icon-s-data"></i>指控点图表描述</template>
                         <el-menu-item-group>
                             <template slot="title">内容</template>
-                            <el-menu-item index="2-1">思想品德</el-menu-item>
-                            <el-menu-item index="2-2">行为规范</el-menu-item>
+                            <el-menu-item index="2-1" @click="getRatioNum('1')">思想品德</el-menu-item>
+                            <el-menu-item index="2-2" @click="getRatioNum('2')">行为规范</el-menu-item>
                             <el-submenu index="2-3">
                                 <template slot="title">身心素质</template>
-                                <el-menu-item index="2-3-1">心理发展</el-menu-item>
-                                <el-menu-item index="2-3-2">身体发展</el-menu-item>
-                                <el-menu-item index="2-3-3">身心发展保障</el-menu-item>
+                                <el-menu-item index="2-3-1" @click="getRatioNum('3','3')">心理发展</el-menu-item>
+                                <el-menu-item index="2-3-2" @click="getRatioNum('3','4')">身体发展</el-menu-item>
+                                <el-menu-item index="2-3-3" @click="getRatioNum('3','5')">身心发展保障</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2-4">
                                 <template slot="title">专业技能</template>
-                                <el-menu-item index="2-4-1">学业奖励</el-menu-item>
-                                <el-menu-item index="2-4-2">学习状况</el-menu-item>
-                                <el-menu-item index="2-4-3">学业发展保障</el-menu-item>
+                                <el-menu-item index="2-4-1" @click="getRatioNum('4','6')">学业奖励</el-menu-item>
+                                <el-menu-item index="2-4-2" @click="getRatioNum('4','7')">学习状况</el-menu-item>
+                                <el-menu-item index="2-4-3" @click="getRatioNum('4','8')">学业发展保障</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2-5">
                                 <template slot="title">职业能力</template>
-                                <el-menu-item index="2-5-1">职业生涯</el-menu-item>
-                                <el-menu-item index="2-5-2">就业状况</el-menu-item>
-                                <el-menu-item index="2-5-3">就业保障</el-menu-item>
-                                <el-menu-item index="2-5-4">社会实践</el-menu-item>
+                                <el-menu-item index="2-5-1" @click="getRatioNum('5','9')">职业生涯</el-menu-item>
+                                <el-menu-item index="2-5-2" @click="getRatioNum('5','10')">就业状况</el-menu-item>
+                                <el-menu-item index="2-5-3" @click="getRatioNum('5','11')">就业保障</el-menu-item>
+                                <el-menu-item index="2-5-4" @click="getRatioNum('5','12')">社会实践</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2-6">
                                 <template slot="title">创新创业</template>
-                                <el-menu-item index="2-6-1">创新创业状况</el-menu-item>
-                                <el-menu-item index="2-6-2">创新创业保障</el-menu-item>
+                                <el-menu-item index="2-6-1" @click="getRatioNum('6','13')">创新创业状况</el-menu-item>
+                                <el-menu-item index="2-6-2" @click="getRatioNum('6','14')">创新创业保障</el-menu-item>
                             </el-submenu>
                         </el-menu-item-group>
                     </el-submenu>
@@ -139,8 +142,8 @@
 
             <el-container>
                 <el-main>
-                    <template v-if="ifShowData">
-                        <el-table :data="tableData" :row-class-name="tableRowClassName">
+
+                        <el-table v-show="table" :data="tableData" :row-class-name="tableRowClassName">
 
                         <el-table-column prop="qualityControlDescription" label="质控点内容" width="400px">
                         </el-table-column>
@@ -210,14 +213,16 @@
                     </el-table>
 
 
-                    </template>
 
-                    <template v-else>
-                        <div>
+                        <div v-show="chart" id="mychart" style="width: 1000px;height:500px;"></div>
+
+
+
+                        <div v-show="welcome">
                             <h2 style="text-align: center">欢迎登陆</h2>
                         </div>
 
-                    </template>
+
 
                 </el-main>
             </el-container>
@@ -232,14 +237,17 @@
             el: '#home',
             data: {
                 tableData: [],
-                ifShowData: false,
+                table: false,
+                chart: false,
+                welcome: true,
                 userDes: '',
                 tagName: '',
-                projectData:[]
+                projectData:[],
+                ratioNum: []
             },
             methods: {
                 getInfo: function (contentId, indexId) {
-                    var url = '/sdqrps/details/' + contentId;
+                    var url = '/sdqrps/details/t/' + contentId;
                     if (indexId != undefined)
                         url = url + '/' + indexId;
                         axios.get(url)
@@ -252,12 +260,19 @@
                                 }
                             });
 
-                        if(home.ifShowData == false)
-                            home.ifShowData = true;
+                        if(home.table === false) {
+                            home.welcome = false;
+                            home.chart = false;
+                            home.table = true;
+                        }
                 },
                 showHello: function () {
-                            if(home.ifShowData == true)
-                                home.ifShowData = false;
+                            if(home.welcome === false){
+                                home.chart = false;
+                                home.table = false;
+                                home.welcome = true;
+                            }
+
                 },
                 tableRowClassName: function (eRow) {
                             if(eRow.row.target < eRow.row.preWarningValue)
@@ -320,6 +335,36 @@
                              });
                          }
                      });
+                },
+                getRatioNum: function (contentId, indexId) {
+                    var url = '/sdqrps/details/c/' + contentId;
+                    if (indexId != undefined)
+                        url = url + '/' + indexId;
+
+                    axios.get(url).then((response) => {
+                        if(response.data.code === 600){
+                            option.series[0].data =  [
+                                {value: response.data.info.preWarningNum, name: '预警的指控点'},
+                                {value: response.data.info.normalNum, name: '正常指控点'}
+                            ];
+                        }
+                        else{
+                            option.series[0].data =  [];
+                            this.$message({
+                                message: response.data.info,
+                                type: 'warning'
+                            });
+                        }
+                        if(home.chart === false) {
+                            home.table = false;
+                            home.welcome = false;
+                            home.chart = true;
+                        }
+
+
+                        myChart.setOption(option);
+
+                    });
                 }
             }
         }
@@ -329,6 +374,37 @@
     });
 
 
+
+    var myChart = echarts.init(document.getElementById('mychart'));
+    var option = {
+        title: {
+            text: '预警比例',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '比例来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: home.preWarningNum, name: '预警的指控点'},
+                    {value: home.normalNum, name: '正常指控点'}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
 </script>
 
 </body>
