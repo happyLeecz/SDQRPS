@@ -20,10 +20,13 @@ public class GoToController {
         return "home";
     }
 
-    @RequestMapping(value = {""})
+    @RequestMapping("")
     public String gotoLogin(){
         return "index";
     }
+
+    @RequestMapping("/admin")
+    public String gotoAdmin(){return "admin";}
 
     @GetMapping("/logout")
     @ResponseBody

@@ -8,6 +8,7 @@ import edu.gxu.sdqrps.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
             return new InfoResult<String>(101,"账号或者密码错误");
 
         User validUser = getUserById(id).get();
-        UserDetail returnedInfo = new UserDetail(validUser.getUserId(),validUser.getDescription(),validUser.getLevel());
-        return new InfoResult<UserDetail>(100,returnedInfo);
+        UserDetail userDetail = new UserDetail(validUser.getUserId(),validUser.getDescription(),validUser.getLevel());
+        return new InfoResult<UserDetail>(100,userDetail);
 
 
     }
@@ -42,8 +43,10 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(userMapper.getById(userId));
     }
 
-
-
+    @Override
+    public InfoResult getAllUserDes() {
+        return new InfoResult<List>(700,userMapper.getAllUser());
+    }
 }
 
 

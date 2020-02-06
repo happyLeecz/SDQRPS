@@ -68,10 +68,10 @@
         <el-container style="height: 600px; border: 1px solid #eee">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
 
-                <el-menu :default-openeds="['1', '2']">
+                <el-menu>
 
                     <el-submenu index="1">
-                        <template slot="title"><i class="el-icon-s-order"></i>指控点表格描述</template>
+                        <template slot="title"><i class="el-icon-s-order"></i>质控点表格描述</template>
                         <el-menu-item-group>
                             <template slot="title">内容</template>
                             <el-menu-item index="1-1" @click="getInfo('1')">思想品德</el-menu-item>
@@ -265,7 +265,7 @@
                             home.chart = false;
                             home.table = true;
                         }
-                },
+                }  ,
                 showHello: function () {
                             if(home.welcome === false){
                                 home.chart = false;

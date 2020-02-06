@@ -10,4 +10,11 @@
     <select id="getById" resultType="user">
         select * from users where user_id = #{userId}
     </select>
+
+    <select id="getAllUser" resultType="userDetail">
+        select user_id,description,level
+        from users
+        where level = 0
+        order by user_id
+    </select>
 </mapper>

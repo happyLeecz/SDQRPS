@@ -1,6 +1,7 @@
 package edu.gxu.sdqrps.dao;
 
 import edu.gxu.sdqrps.model.vo.DetailInfo;
+import edu.gxu.sdqrps.model.vo.SchoolStatistics;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public interface DetailMapper {
                          @Param("newPreWarningValue") int newPreWarningValue);
 
     List<DetailInfo> listById(@Param("userId") int userId,@Param("contentId") int contentId);
-    
+
+    List<DetailInfo> listByUserId(@Param("userId")int userId);
 
 }

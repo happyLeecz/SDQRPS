@@ -80,8 +80,13 @@
                         .then((response) => {
                             if(response.data.code === 100) {
                                 this.loading = true;
+                                var direction = '';
+                                if(response.data.info.level === 0)
+                                    direction = 'home';
+                                else
+                                    direction = 'admin';
                                 setTimeout(() => {
-                                    window.location.href = '/sdqrps/home';
+                                    window.location.href = '/sdqrps/' + direction;
                                 }, 500);
 
                             }

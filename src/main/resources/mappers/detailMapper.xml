@@ -5,43 +5,75 @@
 
 <mapper namespace="edu.gxu.sdqrps.dao.DetailMapper">
     <select id="getById" resultType="detailInfo">
-        select d.content_id,d.user_id,d.quality_control_id,e.quality_control_description,d.target,d.standard,d.pre_warning_value
-        from details d inner join quality_control q on d.quality_control_id = q.quality_control_id
-        where d.content_id = #{contentId} and  d.user_id = #{userId} and d.quality_control_id = #{qualityControlId}
+        select d.content_id,
+               d.user_id,
+               d.quality_control_id,
+               e.quality_control_description,
+               d.target,
+               d.standard,
+               d.pre_warning_value
+        from details d
+                 inner join quality_control q on d.quality_control_id = q.quality_control_id
+        where d.content_id = #{contentId}
+          and d.user_id = #{userId}
+          and d.quality_control_id = #{qualityControlId}
     </select>
 
     <update id="updateValues">
-        update details set
-                                       target = #{target},
-                                       standard = #{standard},
-                                       pre_warning_value = #{preWarningValue}
-        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
-            quality_control_id = #{qualityControlId}
+        update details
+        set target            = #{target},
+            standard          = #{standard},
+            pre_warning_value = #{preWarningValue}
+        where content_id = #{contentId}
+          and user_id = #{userId}
+          and index_id = #{indexId}
+          and quality_control_id = #{qualityControlId}
     </update>
     <update id="updateTarget">
-        update details set
-            target = #{newTarget}
-        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
-            quality_control_id = #{qualityControlId}
+        update details
+        set target = #{newTarget}
+        where content_id = #{contentId}
+          and user_id = #{userId}
+          and index_id = #{indexId}
+          and quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updateStandard">
-        update details set
-            standard = #{newStandard}
-        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
-            quality_control_id = #{qualityControlId}
+        update details
+        set standard = #{newStandard}
+        where content_id = #{contentId}
+          and user_id = #{userId}
+          and index_id = #{indexId}
+          and quality_control_id = #{qualityControlId}
     </update>
 
     <update id="updatePreWarning">
-        update details set
-            pre_warning_value = #{newPreWarningValue}
-        where content_id = #{contentId} and user_id = #{userId} and index_id = #{indexId} and
-            quality_control_id = #{qualityControlId}
+        update details
+        set pre_warning_value = #{newPreWarningValue}
+        where content_id = #{contentId}
+          and user_id = #{userId}
+          and index_id = #{indexId}
+          and quality_control_id = #{qualityControlId}
     </update>
 
     <select id="listById" resultType="detailInfo">
-        select d.content_id,d.user_id,d.index_id,d.quality_control_id,q.quality_control_description,d.target,d.standard,d.pre_warning_value
-            from details d inner join quality_control q on d.quality_control_id = q.quality_control_id
-        where d.user_id = #{userId} and d.content_id = #{contentId}
+        select d.content_id,
+               d.user_id,
+               d.index_id,
+               d.quality_control_id,
+               q.quality_control_description,
+               d.target,
+               d.standard,
+               d.pre_warning_value
+        from details d
+                 inner join quality_control q on d.quality_control_id = q.quality_control_id
+        where d.user_id = #{userId}
+          and d.content_id = #{contentId}
+    </select>
+
+    <select id="listByUserId" resultType="detailInfo">
+        select *
+        from details
+        where user_id = #{userId}
     </select>
 </mapper>

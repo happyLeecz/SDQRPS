@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生发展质量体系评估与预警系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- echarts -->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/echarts@4.6.0/echarts.all.js"></script>-->
+    <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts.js"></script>
+    <style>
+        .el-header {
+            background-color: #303133;
+            color: #333;
+        }
+
+        .el-aside {
+            color: #606266;
+        }
+
+        .el-main {
+            color: #333;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        body > .el-container {
+            margin-bottom: 40px;
+        }
+
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #409EFF;
+        }
+
+    </style>
+</head>
+<body>
+<div id="admin">
+    <el-container>
+        <el-header>
+            <el-link :underline="false">
+                <h1 style="color: snow">学生质量体系评估与预警系统</h1>
+            </el-link>
+
+            <div style="float:right;padding-top: 10px">
+                <el-dropdown trigger="click">
+                    <el-avatar class="el-dropdown-link">
+                        {{userDes}}
+                    </el-avatar>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native="logOut"><i class="el-icon-circle-close"></i>退出
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+
+            </div>
+        </el-header>
+        <el-container style="height: 600px; border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu>
+                <el-submenu index="1">
+                    <template slot="title">
+                        <i class="el-icon-more"></i>
+                        <span>各学院质控点情况</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item v-for="menu in menus" :key="menu.userId" @click="addTab(menu.userId)">
+                            {{menu.description}}
+                        </el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title">
+                        <i class="el-icon-more"></i>
+                        <span>质控点年度情况</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item v-for="menu in menus" :key="menu.userId" >
+                            {{menu.description}}
+                        </el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+
+            </el-menu>
+
+            </el-aside>
+
+            <el-container>
+                <el-main>
+                <el-tabs v-model="editableTabsValue" type="card" closable>
+                    <el-tab-pane key="0" label="欢迎页" name="0">
+                        <span>欢迎来到学校管理后台</span>
+                    </el-tab-pane>
+
+                <el-tab-pane :key="item.id"
+                             v-for="item in editableTabs"
+                             :label="item.title"
+                             :name="item.name"
+                              >
+                 {{item.content}}}
+                </el-tab-pane>
+                </el-tabs>
+                </el-main>
+            </el-container>
+        </el-container>
+
+    </el-container>
+
+</div>
+<script>
+    var admin = new Vue({
+        el: '#admin',
+        data: {
+            menus: [],
+            userDes: '',
+            editableTabs: [],
+            editableTabsValue: '0'
+        },
+        methods: {
+            logOut: function () {
+                axios.get('/sdqrps/logout').then(response => {
+                    if (response.data === 'success')
+                        window.location.href = '/sdqrps'
+                });
+            },
+            addTab: function (userId) {
+                    axios.get('/sdqrps/getSchoolStatistics/' + userId).then(
+                        (response) => {
+                            if(response.data.code === 800){
+                                var tab = {
+                                    title: response.data.info.description,
+                                    name: userId + '',
+                                    content: response.data.info
+                                };
+                                admin.editableTabs.push(tab);
+                            }
+
+                        }
+                    );
+            }
+
+        }
+    });
+
+    axios.get("/sdqrps/getMenus").then((response) => {
+        if (response.data.code === 700)
+            admin.menus = response.data.info;
+    });
+
+    axios.get('/sdqrps/getUserDes').then(response => {
+        admin.userDes = response.data.info;
+    });
+</script>
+
+</body>
+</html>

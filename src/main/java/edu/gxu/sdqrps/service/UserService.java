@@ -27,4 +27,5 @@ public interface UserService {
      */
     Optional<User> getUserById(int userId);
 
+    InfoResult getAllUserDes();
 }
