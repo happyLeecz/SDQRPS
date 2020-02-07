@@ -36,14 +36,14 @@ public class AdminController {
             return new InfoResult<String>(701, "没有权限");
     }
 
-    @GetMapping("/getSchoolStatistics/{userId}")
-    public InfoResult getSchoolStatistics(HttpSession httpSession,
-                                          @PathVariable("userId") int userId) {
+    @GetMapping(value = {"/getSchoolStatistics/{userId}","/getAllStatistics"})
+    public InfoResult getStatistics(HttpSession httpSession,
+                                          @PathVariable(value = "userId",required = false) Integer userId) {
         UserDetail userDetail = (UserDetail) httpSession.getAttribute("userDetail");
-        if (userDetail.getUserId() == userId || userDetail.getLevel() == 1)
-            return detailService.getSchoolStatistics(userId);
+        if (userDetail.getLevel() == 1)
+            return detailService.getStatistics(userId);
         else
-            return new InfoResult<String>(801, "权限不足");
+            return new InfoResult<String>(8901, "权限不足");
     }
 
 }

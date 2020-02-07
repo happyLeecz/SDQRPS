@@ -13,6 +13,7 @@ import edu.gxu.sdqrps.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -92,13 +93,26 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public InfoResult getSchoolStatistics(int userId) {
+    public InfoResult getStatistics(Integer userId) {
+        if(userId != null) {
+            SchoolStatistics schoolStatistics = getSs(userId);
+            return new InfoResult<SchoolStatistics>(800, schoolStatistics);
+        }else{
+            List<Integer> idList = userMapper.getAllSchoolUserId();
+            List<SchoolStatistics> schoolStatisticsList = new ArrayList<>();
+            idList.forEach((id -> {
+                schoolStatisticsList.add(getSs(id));
+            }));
+            return new InfoResult(900,schoolStatisticsList);
+        }
+    }
+
+    public SchoolStatistics getSs(int userId){
         List<DetailInfo> detailInfoList = detailMapper.listByUserId(userId);
         long totalNum = detailInfoList.size();
         long preWarningNum = detailInfoList.stream().filter(detailInfo -> detailInfo.getTarget() < detailInfo.getPreWarningValue()).count();
         long normalNum = totalNum - preWarningNum;
         User user = userMapper.getById(userId);
-        SchoolStatistics schoolStatistics = new SchoolStatistics(user.getUserId(), user.getDescription(), user.getLevel(), preWarningNum, normalNum, totalNum);
-        return new InfoResult<SchoolStatistics>(800, schoolStatistics);
+        return new SchoolStatistics(user.getUserId(), user.getDescription(), user.getLevel(), preWarningNum, normalNum, totalNum);
     }
 }

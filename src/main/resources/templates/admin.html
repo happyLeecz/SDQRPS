@@ -72,50 +72,80 @@
         </el-header>
         <el-container style="height: 600px; border: 1px solid #eee">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-            <el-menu>
-                <el-submenu index="1">
-                    <template slot="title">
-                        <i class="el-icon-more"></i>
-                        <span>各学院质控点情况</span>
-                    </template>
-                    <el-menu-item-group>
-                        <el-menu-item v-for="menu in menus" :key="menu.userId" @click="addTab(menu.userId)">
-                            {{menu.description}}
-                        </el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
+                <el-menu>
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-more"></i>
+                            <span>各学院质控点情况</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item v-for="menu in menus" :key="menu.userId" @click="addTab(menu.userId)">
+                                {{menu.description}}
+                            </el-menu-item>
+                            <el-menu-item @click="addTab(45)">学院比较</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
 
-                <el-submenu index="2">
-                    <template slot="title">
-                        <i class="el-icon-more"></i>
-                        <span>质控点年度情况</span>
-                    </template>
-                    <el-menu-item-group>
-                        <el-menu-item v-for="menu in menus" :key="menu.userId" >
-                            {{menu.description}}
-                        </el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title">
+                            <i class="el-icon-more"></i>
+                            <span>质控点年度情况</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item v-for="menu in menus" :key="menu.userId">
+                                {{menu.description}}
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
 
-            </el-menu>
+                </el-menu>
 
             </el-aside>
 
             <el-container>
                 <el-main>
-                <el-tabs v-model="editableTabsValue" type="card" closable>
-                    <el-tab-pane key="0" label="欢迎页" name="0">
-                        <span>欢迎来到学校管理后台</span>
-                    </el-tab-pane>
+                    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
 
-                <el-tab-pane :key="item.id"
-                             v-for="item in editableTabs"
-                             :label="item.title"
-                             :name="item.name"
-                              >
-                 {{item.content}}}
-                </el-tab-pane>
-                </el-tabs>
+
+                        <el-tab-pane :key="item.content.userId"
+                                     v-for="item in editableTabs"
+                                     :label="item.title"
+                                     :name="item.name"
+                        >
+                            <template v-if="item.type === 1">
+                                <el-table :data="[item.content]">
+                                    <el-table-column
+                                            prop="description"
+                                            label="描述"
+                                            width="180">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="preWarningNum"
+                                            label="预警质控数"
+                                            width="180">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="normalNum"
+                                            label="正常质控数"
+                                            width="180">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="totalNum"
+                                            label="质控总数"
+                                            width="180">
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+
+                            <template v-else-if="item.type === 0">
+                                <span>{{item.content}}</span>
+                            </template>
+
+                            <div v-if="item.type === 2" id="mychart" style="width: 1000px;height:500px;"></div>
+
+
+                        </el-tab-pane>
+                    </el-tabs>
                 </el-main>
             </el-container>
         </el-container>
@@ -129,7 +159,7 @@
         data: {
             menus: [],
             userDes: '',
-            editableTabs: [],
+            editableTabs: [{title: '欢迎页', name: '0', content: '欢迎登陆学校管理界面', type: 0}],
             editableTabsValue: '0'
         },
         methods: {
@@ -140,22 +170,88 @@
                 });
             },
             addTab: function (userId) {
+                if (userId != 45) { //谐音"是我"
+                    var contain = false;
+                    admin.editableTabs.forEach((item) => {
+                        if (item.name === userId + '')
+                            contain = true;
+                    });
                     axios.get('/sdqrps/getSchoolStatistics/' + userId).then(
                         (response) => {
-                            if(response.data.code === 800){
-                                var tab = {
-                                    title: response.data.info.description,
-                                    name: userId + '',
-                                    content: response.data.info
-                                };
-                                admin.editableTabs.push(tab);
+                            if (response.data.code === 800) {
+                                if (!contain) {
+                                    var tab = {
+                                        title: response.data.info.description,
+                                        name: userId + '',
+                                        content: response.data.info,
+                                        type: 1
+                                    };
+                                    admin.editableTabs.push(tab);
+                                    admin.editableTabsValue = userId + '';
+                                } else {
+                                    var item = admin.editableTabs.find((item) => item.name === userId + '');
+                                    item.content = response.data.info;
+                                    admin.editableTabsValue = userId + '';
+                                }
                             }
 
                         }
                     );
-            }
+                } else {
+                    var ifChart = false;
+                    admin.editableTabs.forEach((item) => {
+                        if (item.name === 'chart') {
+                            ifChart = true;
+                        }
+                    });
+                    if (!ifChart) {
+                        var tab = {
+                            title: '各学院对比柱状图',
+                            name: 'chart',
+                            content: {},
+                            type: 2
+                        };
+                        admin.editableTabs.push(tab);
+                    }
+                    admin.editableTabsValue = 'chart';
 
+                    axios.get("/sdqrps/getAllStatistics").then((response) => {
+                        if(response.data.code === 900)
+                            option.dataset.source = response.data.info;
+                    });
+
+                    if(myChart === undefined) {
+                        admin.$nextTick(function () {
+                            myChart = echarts.init(document.getElementById('mychart'));
+                            myChart.setOption(option);
+                        });
+                    }else{
+                        myChart.setOption(option);
+                    }
+
+
+                }
+            },
+            removeTab: function (targetName) {
+                let tabs = admin.editableTabs;
+                let activeName = admin.editableTabsValue;
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                            let nextTab = tabs[index + 1] || tabs[index - 1];
+                            if (nextTab) {
+                                activeName = nextTab.name;
+                            }
+                        }
+                    });
+                }
+
+                admin.editableTabsValue = activeName;
+                admin.editableTabs = tabs.filter(tab => tab.name !== targetName);
+            }
         }
+
+
     });
 
     axios.get("/sdqrps/getMenus").then((response) => {
@@ -166,6 +262,23 @@
     axios.get('/sdqrps/getUserDes').then(response => {
         admin.userDes = response.data.info;
     });
+var myChart;
+    var option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            dimensions: ['description', 'preWarningNum', 'normalNum', 'totalNum'],
+            source: []
+        },
+        xAxis: {type: 'category'},
+        yAxis: {},
+
+        series: [
+            {type: 'bar'},
+            {type: 'bar'},
+            {type: 'bar'}
+        ]
+    };
 </script>
 
 </body>

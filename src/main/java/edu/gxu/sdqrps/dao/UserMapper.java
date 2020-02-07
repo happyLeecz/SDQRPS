@@ -17,6 +17,7 @@ public interface UserMapper {
     Integer getIdByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
     User getById(@Param("userId") int userId);
     List<UserDetail> getAllUser();
+    List<Integer> getAllSchoolUserId();
 
 
 

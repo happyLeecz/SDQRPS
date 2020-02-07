@@ -20,6 +20,6 @@ public interface DetailService {
 
     InfoResult getRatioNum(int userId, int contentId, Integer indexId);
 
-    InfoResult getSchoolStatistics(int userId);
+    InfoResult getStatistics(Integer userId);
 
 }

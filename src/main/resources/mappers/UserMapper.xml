@@ -17,4 +17,9 @@
         where level = 0
         order by user_id
     </select>
+    <select id="getAllSchoolUserId" resultType="int">
+        select user_id
+        from users
+        where level = 0
+    </select>
 </mapper>
