@@ -24,6 +24,6 @@ public class SdqrpsApplication implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/sdqrps/home");
+                .addPathPatterns("/sdqrps/home").addPathPatterns("/sdqrps/admin");
     }
 }
