@@ -41,7 +41,6 @@ class SdqrpsApplicationTests {
     void detailmapperTest() {
     List<DetailInfo> infoList= detailMapper.listById(1,1);
         System.out.println(infoList.toString());
-
     }
 
 }

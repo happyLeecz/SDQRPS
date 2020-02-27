@@ -94,20 +94,20 @@ public class DetailServiceImpl implements DetailService {
 
     @Override
     public InfoResult getStatistics(Integer userId) {
-        if(userId != null) {
+        if (userId != null) {
             SchoolStatistics schoolStatistics = getSs(userId);
             return new InfoResult<SchoolStatistics>(800, schoolStatistics);
-        }else{
+        } else {
             List<Integer> idList = userMapper.getAllSchoolUserId();
             List<SchoolStatistics> schoolStatisticsList = new ArrayList<>();
             idList.forEach((id -> {
                 schoolStatisticsList.add(getSs(id));
             }));
-            return new InfoResult(900,schoolStatisticsList);
+            return new InfoResult(900, schoolStatisticsList);
         }
     }
 
-    public SchoolStatistics getSs(int userId){
+    public SchoolStatistics getSs(int userId) {
         List<DetailInfo> detailInfoList = detailMapper.listByUserId(userId);
         long totalNum = detailInfoList.size();
         long preWarningNum = detailInfoList.stream().filter(detailInfo -> detailInfo.getTarget() < detailInfo.getPreWarningValue()).count();

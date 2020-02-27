@@ -36,9 +36,9 @@ public class AdminController {
             return new InfoResult<String>(701, "没有权限");
     }
 
-    @GetMapping(value = {"/getSchoolStatistics/{userId}","/getAllStatistics"})
+    @GetMapping(value = {"/getSchoolStatistics/{userId}", "/getAllStatistics"})
     public InfoResult getStatistics(HttpSession httpSession,
-                                          @PathVariable(value = "userId",required = false) Integer userId) {
+                                    @PathVariable(value = "userId", required = false) Integer userId) {
         UserDetail userDetail = (UserDetail) httpSession.getAttribute("userDetail");
         if (userDetail.getLevel() == 1)
             return detailService.getStatistics(userId);

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private  UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper) {
@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public InfoResult checkUser(String username, String password) {
         Integer id = userMapper.getIdByUserNameAndPassword(username, password);
-        if(id == null)
-            return new InfoResult<String>(101,"账号或者密码错误");
+        if (id == null)
+            return new InfoResult<String>(101, "账号或者密码错误");
 
         User validUser = getUserById(id).get();
-        UserDetail userDetail = new UserDetail(validUser.getUserId(),validUser.getDescription(),validUser.getLevel());
-        return new InfoResult<UserDetail>(100,userDetail);
+        UserDetail userDetail = new UserDetail(validUser.getUserId(), validUser.getDescription(), validUser.getLevel());
+        return new InfoResult<UserDetail>(100, userDetail);
 
 
     }
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public InfoResult getAllUserDes() {
-        return new InfoResult<List>(700,userMapper.getAllUser());
+        return new InfoResult<List>(700, userMapper.getAllUser());
     }
 }
 

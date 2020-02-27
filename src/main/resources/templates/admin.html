@@ -107,11 +107,12 @@
                     <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
 
 
-                        <el-tab-pane :key="item.content.userId"
+                        <el-tab-pane :key="item.name"
                                      v-for="item in editableTabs"
                                      :label="item.title"
                                      :name="item.name"
                         >
+                            <!-- 表示这是一个普通显示表格信息的tab -->
                             <template v-if="item.type === 1">
                                 <el-table :data="[item.content]">
                                     <el-table-column
@@ -136,11 +137,11 @@
                                     </el-table-column>
                                 </el-table>
                             </template>
-
+                            <!-- type === 0 表示这个tab是一个欢迎页，显示欢迎页的内容 -->
                             <template v-else-if="item.type === 0">
                                 <span>{{item.content}}</span>
                             </template>
-
+                            <!-- type === 2 表示这个tab这是一个图表页，显示图表内容-->
                             <div v-if="item.type === 2" id="mychart" style="width: 1000px;height:500px;"></div>
 
 
@@ -198,38 +199,42 @@
                         }
                     );
                 } else {
+                    //进入到图表的绘制
                     var ifChart = false;
+                    //看是否存在图表tab
                     admin.editableTabs.forEach((item) => {
                         if (item.name === 'chart') {
                             ifChart = true;
                         }
                     });
+                    //如果没有tabs里面没有图表tab就加入里面去
                     if (!ifChart) {
+
                         var tab = {
                             title: '各学院对比柱状图',
                             name: 'chart',
                             content: {},
                             type: 2
                         };
+
                         admin.editableTabs.push(tab);
+                        admin.editableTabsValue = 'chart';
+
                     }
-                    admin.editableTabsValue = 'chart';
 
-                    axios.get("/sdqrps/getAllStatistics").then((response) => {
-                        if(response.data.code === 900)
-                            option.dataset.source = response.data.info;
-                    });
 
-                    if(myChart === undefined) {
                         admin.$nextTick(function () {
-                            myChart = echarts.init(document.getElementById('mychart'));
-                            myChart.setOption(option);
+                            axios.get("/sdqrps/getAllStatistics").then((response) => {
+                                if (response.data.code === 900) {
+                                    option.dataset.source = response.data.info;
+                                    if(!ifChart) {
+                                        myChart = echarts.init(document.getElementById('mychart'));
+                                    }
+                                    myChart.setOption(option);
+                                }
+                            });
+
                         });
-                    }else{
-                        myChart.setOption(option);
-                    }
-
-
                 }
             },
             removeTab: function (targetName) {
@@ -245,7 +250,6 @@
                         }
                     });
                 }
-
                 admin.editableTabsValue = activeName;
                 admin.editableTabs = tabs.filter(tab => tab.name !== targetName);
             }
@@ -262,7 +266,7 @@
     axios.get('/sdqrps/getUserDes').then(response => {
         admin.userDes = response.data.info;
     });
-var myChart;
+    var myChart;
     var option = {
         legend: {},
         tooltip: {},

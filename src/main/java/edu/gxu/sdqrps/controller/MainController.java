@@ -79,8 +79,8 @@ public class MainController {
     @GetMapping(value = {"/details/c/{contentId}", "/details/c/{contentId}/{indexId}"})
     public InfoResult getRatioData(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
                                    @PathVariable("contentId") int contentId,
-                                   @PathVariable(value = "indexId", required = false) Integer indexId){
-        return detailService.getRatioNum(userDetail.getUserId(),contentId,indexId);
+                                   @PathVariable(value = "indexId", required = false) Integer indexId) {
+        return detailService.getRatioNum(userDetail.getUserId(), contentId, indexId);
     }
 
 
