@@ -26,14 +26,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InfoResult checkUser(String username, String password) {
+    public InfoResult<?> checkUser(String username, String password) {
         Integer id = userMapper.getIdByUserNameAndPassword(username, password);
         if (id == null)
-            return new InfoResult<String>(101, "账号或者密码错误");
+            return new InfoResult<>(101, "账号或者密码错误");
 
         User validUser = getUserById(id).get();
         UserDetail userDetail = new UserDetail(validUser.getUserId(), validUser.getDescription(), validUser.getLevel());
-        return new InfoResult<UserDetail>(100, userDetail);
+        return new InfoResult<>(100, userDetail);
 
 
     }
@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InfoResult getAllUserDes() {
-        return new InfoResult<List>(700, userMapper.getAllUser());
+    public InfoResult<?> getAllUserDes() {
+        return new InfoResult<>(700, userMapper.getAllUser());
     }
 }
 

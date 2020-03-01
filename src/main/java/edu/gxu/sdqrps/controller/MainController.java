@@ -60,14 +60,16 @@ public class MainController {
                            @RequestParam("qualityControlId") int qualityControlId,
                            @RequestParam("newValue") int newValue,
                            @RequestParam("type") String type) {
-        if (type.equals("target"))
-            return detailService.updateTargetValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
-        else if (type.equals("standard"))
-            return detailService.updateStandardValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
-        else if (type.equals("preWarningValue"))
-            return detailService.updatePreWarningValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
-        else
-            return new InfoResult<>(401, "编辑有误");
+        switch (type) {
+            case "target":
+                return detailService.updateTargetValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
+            case "standard":
+                return detailService.updateStandardValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
+            case "preWarningValue":
+                return detailService.updatePreWarningValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
+            default:
+                return new InfoResult<>(401, "编辑有误");
+        }
     }
 
 

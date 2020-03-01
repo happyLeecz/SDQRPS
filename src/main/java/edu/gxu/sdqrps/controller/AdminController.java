@@ -29,21 +29,21 @@ public class AdminController {
     }
 
     @GetMapping("/getMenus")
-    public InfoResult getUsers(HttpSession httpSession) {
+    public InfoResult<?> getUsers(HttpSession httpSession) {
         if (((UserDetail) httpSession.getAttribute("userDetail")).getLevel() == 1)
             return userService.getAllUserDes();
         else
-            return new InfoResult<String>(701, "没有权限");
+            return new InfoResult<>(701, "没有权限");
     }
 
     @GetMapping(value = {"/getSchoolStatistics/{userId}", "/getAllStatistics"})
-    public InfoResult getStatistics(HttpSession httpSession,
+    public InfoResult<?> getStatistics(HttpSession httpSession,
                                     @PathVariable(value = "userId", required = false) Integer userId) {
         UserDetail userDetail = (UserDetail) httpSession.getAttribute("userDetail");
         if (userDetail.getLevel() == 1)
             return detailService.getStatistics(userId);
         else
-            return new InfoResult<String>(8901, "权限不足");
+            return new InfoResult<>(8901, "权限不足");
     }
 
 }
