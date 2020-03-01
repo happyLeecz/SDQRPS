@@ -7,6 +7,7 @@ import edu.gxu.sdqrps.model.vo.DetailInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
@@ -42,5 +43,4 @@ class SdqrpsApplicationTests {
     List<DetailInfo> infoList= detailMapper.listById(1,1);
         System.out.println(infoList.toString());
     }
-
 }

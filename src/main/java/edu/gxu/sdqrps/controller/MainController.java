@@ -28,33 +28,33 @@ public class MainController {
     }
 
     @PostMapping(value = "/login")
-    public InfoResult login(@RequestParam("userName") String userName,
+    public InfoResult<?> login(@RequestParam("userName") String userName,
                             @RequestParam("password") String password,
                             HttpSession httpSession) {
-        InfoResult infoResult = userService.checkUser(userName, password);
+        InfoResult<?> infoResult = userService.checkUser(userName, password);
         if (infoResult.getCode() == 100)
             httpSession.setAttribute("userDetail", infoResult.getInfo());
         return infoResult;
     }
 
     @GetMapping(value = {"/details/t/{contentId}", "/details/t/{contentId}/{indexId}"})
-    public InfoResult showDetails(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
+    public InfoResult<?> showDetails(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
                                   @PathVariable("contentId") int contentId,
                                   @PathVariable(value = "indexId", required = false) Integer indexId) {
         return detailService.getAllWithUserIdAndContentId(userDetail.getUserId(), contentId, indexId);
     }
 
     @GetMapping("/getUserDes")
-    public InfoResult getUserDes(HttpSession httpSession) {
+    public InfoResult<?> getUserDes(HttpSession httpSession) {
         UserDetail userDetail = (UserDetail) httpSession.getAttribute("userDetail");
         if (userDetail != null)
-            return new InfoResult<String>(300, userDetail.getDescription());
+            return new InfoResult<>(300, userDetail.getDescription());
         else
-            return new InfoResult<String>(301, "无");
+            return new InfoResult<>(301, "无");
     }
 
     @PostMapping("/edit")
-    public InfoResult edit(@RequestParam("contentId") int contentId,
+    public InfoResult<?> edit(@RequestParam("contentId") int contentId,
                            @SessionAttribute("userDetail") UserDetail userDetail,
                            @RequestParam("indexId") int indexId,
                            @RequestParam("qualityControlId") int qualityControlId,
@@ -67,17 +67,17 @@ public class MainController {
         else if (type.equals("preWarningValue"))
             return detailService.updatePreWarningValue(contentId, userDetail.getUserId(), indexId, qualityControlId, newValue);
         else
-            return new InfoResult<String>(401, "编辑有误");
+            return new InfoResult<>(401, "编辑有误");
     }
 
 
     @GetMapping("/showProject/{qualityControlId}")
-    public InfoResult showProject(@PathVariable("qualityControlId") int qualityControlId) {
+    public InfoResult<?> showProject(@PathVariable("qualityControlId") int qualityControlId) {
         return detailService.getProjectWithQualityControlId(qualityControlId);
     }
 
     @GetMapping(value = {"/details/c/{contentId}", "/details/c/{contentId}/{indexId}"})
-    public InfoResult getRatioData(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
+    public InfoResult<?> getRatioData(@SessionAttribute(value = "userDetail", required = false) UserDetail userDetail,
                                    @PathVariable("contentId") int contentId,
                                    @PathVariable(value = "indexId", required = false) Integer indexId) {
         return detailService.getRatioNum(userDetail.getUserId(), contentId, indexId);
