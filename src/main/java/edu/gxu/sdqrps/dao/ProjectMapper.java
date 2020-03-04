@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author cz
  */
-
+@Repository
 public interface ProjectMapper {
 
     Project getByProjectId(@Param("projectId") int projectId);

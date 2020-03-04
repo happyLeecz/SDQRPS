@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author cz
  */
-
+@Repository
 public interface QualityControlMapper {
 
     QualityControl getById(@Param("qualityControlId") int qualityControlId);

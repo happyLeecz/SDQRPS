@@ -5,11 +5,8 @@ import edu.gxu.sdqrps.model.vo.UserDetail;
 import edu.gxu.sdqrps.service.DetailService;
 import edu.gxu.sdqrps.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.util.stream.Stream;
 
 /**
  * @author cz

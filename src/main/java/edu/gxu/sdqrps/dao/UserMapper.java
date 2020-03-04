@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author cz
  */
-
+@Repository
 public interface UserMapper {
 
     Integer getIdByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);

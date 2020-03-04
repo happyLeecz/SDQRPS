@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author cz
  */
-
+@Repository
 public interface IndexMapper {
 
     Index getByIndexName(@Param("indexDescription") String indexDescription);

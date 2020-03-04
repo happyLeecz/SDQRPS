@@ -3,13 +3,14 @@ package edu.gxu.sdqrps.dao;
 import edu.gxu.sdqrps.model.vo.DetailInfo;
 import edu.gxu.sdqrps.model.vo.SchoolStatistics;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author cz
  */
-
+@Repository
 public interface DetailMapper {
 
     int updateValues(@Param("contentId") int contentId,
