@@ -19,16 +19,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @MapperScan(basePackages = "edu.gxu.sdqrps.dao")
-public class SdqrpsApplication implements WebMvcConfigurer {
+public class SdqrpsApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(SdqrpsApplication.class, args);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/sdqrps/home").addPathPatterns("/sdqrps/admin");
-    }
+
 
 }
